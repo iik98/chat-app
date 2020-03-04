@@ -17,7 +17,7 @@ import { Link, Redirect } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 
 // firebase hook
-import { useFirebase } from '../../components/FirebaseProvider';
+import { auth, firestore, FieldValue, useFirebase } from '../../components/FirebaseProvider';
 
 // app components
 import AppLoading from '../../components/AppLoading';
@@ -28,17 +28,19 @@ function Registrasi() {
     const [form, setForm] = useState({
         email: '',
         password: '',
-        ulangi_password: ''
+        ulangi_password: '',
+        nama: ''
     });
 
     const [error, setError] = useState({
         email: '',
         password: '',
-        ulangi_password: ''
+        ulangi_password: '',
+        nama: ''
     })
     const [isSubmitting, setSubmitting] = useState(false);
 
-    const { auth, user, loading } = useFirebase();
+    const { user, loading } = useFirebase();
 
     const handleChange = e => {
 
@@ -72,6 +74,10 @@ function Registrasi() {
             newError.ulangi_password = 'Ulangi Password tidak sama dengan Password';
         }
 
+        if (!form.nama) {
+            newError.nama = "Nama wajib diisi";
+        }
+
         return newError;
     }
 
@@ -85,7 +91,16 @@ function Registrasi() {
         } else {
             try {
                 setSubmitting(true);
-                await auth.createUserWithEmailAndPassword(form.email, form.password)
+                // 1. buat user auth baru
+                const { user } = await auth.createUserWithEmailAndPassword(form.email, form.password);
+
+                // 2. simpan data nama dan email user di doc users/{userId} firestore
+                await firestore.doc(`users/${user.uid}`).set({
+                    email: form.email,
+                    nama: form.nama,
+                    createdAt: FieldValue.serverTimestamp()
+                }, { merge: true })
+
             } catch (e) {
 
                 const newError = {};
@@ -126,7 +141,7 @@ function Registrasi() {
         return <Redirect to="/" />
     }
 
-    console.log(user)
+
     return <Container maxWidth="xs">
         <Paper className={classes.paper}>
             <Typography
@@ -135,6 +150,19 @@ function Registrasi() {
                 className={classes.title}>Buat Akun Baru</Typography>
 
             <form onSubmit={handleSubmit} noValidate>
+                <TextField
+                    id="nama"
+                    name="nama"
+                    margin="normal"
+                    label="Nama"
+                    fullWidth
+                    required
+                    value={form.nama}
+                    onChange={handleChange}
+                    helperText={error.nama}
+                    error={error.nama ? true : false}
+                    disabled={isSubmitting}
+                />
                 <TextField
                     id="email"
                     type="email"
@@ -155,6 +183,7 @@ function Registrasi() {
                     name="password"
                     margin="normal"
                     label="Password"
+                    autoComplete="new-password"
                     fullWidth
                     required
                     value={form.password}

@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid == userId
+    }
+    
+    match /chats/{chatId} {
+      allow read, write: if request.auth.uid in resource.data.user_ids;
+      match /messages/{messageId} {
+        allow read: if request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.user_ids;
+        allow write: if request.auth.uid == resource.data.user_id;
+      }
+    }
+    match /fcm/{userId} {
+      allow read, write: if request.auth.uid == userId;
+    }
+  }
+}

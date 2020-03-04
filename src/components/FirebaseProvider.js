@@ -15,7 +15,7 @@ firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 export const storage = firebase.storage();
-
+export const FieldValue = firebase.firestore.FieldValue;
 
 const FirebaseContext = React.createContext();
 
