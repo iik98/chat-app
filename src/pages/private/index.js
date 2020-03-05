@@ -31,6 +31,9 @@ import Chat from './chat';
 //firebase hook
 import { useFirebase } from '../../components/FirebaseProvider';
 
+// create app bar context
+const AppBarContext = React.createContext();
+
 
 export default function Private() {
     const classes = useStyles();
@@ -38,14 +41,14 @@ export default function Private() {
     const { auth } = useFirebase();
 
     // menu
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorElMenu, setAnchorElMenu] = React.useState(null);
 
-    const handleClick = event => {
-        setAnchorEl(event.currentTarget);
+    const handleClickMenu = event => {
+        setAnchorElMenu(event.currentTarget);
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
+    const handleCloseMenu = () => {
+        setAnchorElMenu(null);
     };
 
     const handleSignOut = (e) => {
@@ -56,63 +59,67 @@ export default function Private() {
     }
 
     return (
-        <div className={classes.root}>
+        <AppBarContext.Provider value={{
 
-            <AppBar position="absolute">
-                <Toolbar className={classes.toolbar}>
+        }}>
+            <div className={classes.root}>
 
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                <AppBar position="absolute">
+                    <Toolbar className={classes.toolbar}>
+
+                        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                            <Switch>
+
+                                <Route path="/pengaturan" children="Pengaturan" />
+                                <Route children="Chat App" />
+
+                            </Switch>
+                        </Typography>
+                        <IconButton aria-label="search" color="inherit">
+                            <SearchIcon />
+                        </IconButton>
+                        <IconButton
+                            onClick={handleClickMenu}
+                            color="inherit"
+                            aria-label="display more actions"
+                            edge="end"
+                        >
+
+                            <MoreIcon />
+
+                        </IconButton>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorElMenu}
+                            keepMounted
+                            open={Boolean(anchorElMenu)}
+                            onClose={handleCloseMenu}
+                        >
+                            <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
+
+                            <MenuItem onClick={() => {
+                                handleSignOut()
+                                handleCloseMenu()
+                            }}>Logout</MenuItem>
+                        </Menu>
+                    </Toolbar>
+                </AppBar>
+
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
+                    <Container maxWidth="lg" className={classes.container}>
+
                         <Switch>
+                            <Route path="/pengaturan" component={Pengaturan} />
 
-                            <Route path="/pengaturan" children="Pengaturan" />
-                            <Route children="Chat App" />
-
+                            <Route path="/chat" component={Chat} />
                         </Switch>
-                    </Typography>
-                    <IconButton aria-label="search" color="inherit">
-                        <SearchIcon />
-                    </IconButton>
-                    <IconButton
-                        onClick={handleClick}
-                        color="inherit"
-                        aria-label="display more actions"
-                        edge="end"
-                    >
 
-                        <MoreIcon />
+                    </Container>
 
-                    </IconButton>
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                    >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-
-                        <MenuItem onClick={() => {
-                            handleSignOut()
-                            handleClose()
-                        }}>Logout</MenuItem>
-                    </Menu>
-                </Toolbar>
-            </AppBar>
-
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-
-                    <Switch>
-                        <Route path="/pengaturan" component={Pengaturan} />
-
-                        <Route path="/chat" component={Chat} />
-                    </Switch>
-
-                </Container>
-
-            </main>
-        </div>
+                </main>
+            </div>
+        </AppBarContext.Provider>
     );
 }
 
