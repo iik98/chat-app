@@ -13,17 +13,20 @@ export function useData() {
 export default function DataProvider(props) {
     const { user } = useFirebase();
     const profileDoc = firestore.doc(`profiles/${user.uid}`);
-    const profilesCol = firestore.collection('profiles');
+    const contactsCol = firestore.collection('profiles');
+    const chatsCol = firestore.collection('chats');
     const [profile, loadingProfile] = useDocumentData(profileDoc)
-    const [profiles, loadingProfiles] = useCollectionData(profilesCol.orderBy('nama'), { idField: 'id' });
+    const [contacts, loadingContacts] = useCollectionData(contactsCol.orderBy('nama'), { idField: 'id' });
+    const [chats, loadingChats] = useCollectionData(chatsCol.where("user_ids", "array-contains", user.uid), { idField: "id" });
 
-    if (loadingProfiles || loadingProfile) {
+    if (loadingContacts || loadingProfile || loadingChats) {
         return <AppLoading />
     }
 
     return <DataContext.Provider value={{
-        profiles,
-        profile
+        contacts,
+        profile,
+        chats
     }}>
         {props.children}
     </DataContext.Provider>

@@ -19,14 +19,56 @@ import SearchIcon from '@material-ui/icons/Search';
 import useStyles from './styles/add';
 import { useData } from '../../../components/DataProvider';
 
+import { firestore, useFirebase, FieldValue } from '../../../components/FirebaseProvider';
+import { useHistory } from 'react-router-dom';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function AddChatDialog({ open, handleClose }) {
     const classes = useStyles();
+    const history = useHistory();
 
-    const { profiles } = useData();
+    const { contacts, chats, profile } = useData();
+    const { user } = useFirebase();
+
+    const handleOpenChatRoom = contact => async () => {
+
+        console.log(chats)
+        const findChat = chats.find((chat) => {
+            return chat.user_ids.includes(contact.id);
+        })
+
+        if (findChat) {
+            return history.push(`/chat/${findChat.id}`)
+        }
+
+        const newChatData = {
+            user_ids: [
+                user.uid,
+                contact.id
+
+            ],
+            last_message: {
+            },
+            unread_count: {
+                [user.uid]: 0,
+                [contact.id]: 0
+            },
+            user_profiles: {
+                [user.uid]: profile,
+                [contact.id]: contact
+            },
+            created_at: FieldValue.serverTimestamp(),
+            updated_at: FieldValue.serverTimestamp()
+
+        }
+        console.log(newChatData)
+
+        await firestore.collection('chats').add(newChatData);
+
+    }
     return (
         <Dialog
             fullScreen
@@ -58,14 +100,14 @@ export default function AddChatDialog({ open, handleClose }) {
                 </Toolbar>
             </AppBar>
             <List>
-                {profiles.map((profile) => {
+                {contacts.map((contact) => {
 
-                    return <React.Fragment key={profile.id}>
-                        <ListItem button>
+                    return <React.Fragment key={contact.id}>
+                        <ListItem button onClick={handleOpenChatRoom(contact)}>
                             <ListItemAvatar>
-                                <Avatar alt={profile.nama} src={profile.foto} className={classes.orange} />
+                                <Avatar alt={contact.nama} src={contact.foto} className={classes.orange} />
                             </ListItemAvatar>
-                            <ListItemText primary={profile.nama} secondary={profile.deskripsi || ''} />
+                            <ListItemText primary={contact.nama} secondary={contact.deskripsi || ''} />
                         </ListItem>
                         <Divider />
                     </React.Fragment>
