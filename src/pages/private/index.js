@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SignOutIcon from '@material-ui/icons/ExitToApp';
+import MoreIcon from '@material-ui/icons/MoreVert';
 import HomeIcon from '@material-ui/icons/Home';
 import StoreIcon from '@material-ui/icons/Store';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
@@ -28,7 +29,7 @@ import { Switch, Route } from 'react-router-dom';
 
 // komponen halaman private
 import Pengaturan from './pengaturan';
-import Home from './home';
+import Chat from './chat';
 
 //firebase hook
 import { useFirebase } from '../../components/FirebaseProvider';
@@ -57,118 +58,28 @@ export default function Private() {
 
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="Open drawer"
-                        onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                         <Switch>
-                            <Route path="/produk" children="Produk" />
-                            <Route path="/transaksi" children="Transaksi" />
+
                             <Route path="/pengaturan" children="Pengaturan" />
-                            <Route children="Home" />
+                            <Route children="Chat App" />
 
                         </Switch>
                     </Typography>
                     <IconButton
-                        onClick={handleSignOut}
-                        color="inherit">
+                        // onClick={handleSignOut}
+                        color="inherit"
+                        aria-label="display more actions"
+                        edge="end"
+                    >
 
-                        <SignOutIcon />
+                        <MoreIcon />
 
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
-                open={open}
-            >
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    <Route path="/" exact children={({ match, history }) => {
 
-                        return <ListItem
-                            button
-                            selected={match ? true : false}
-                            onClick={() => {
-                                history.push('/')
-                            }}
-                        >
-                            <ListItemIcon>
-                                <HomeIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Home" />
-                        </ListItem>
-
-                    }} />
-
-                    <Route path="/produk" children={({ match, history }) => {
-
-                        return <ListItem
-                            button
-                            selected={match ? true : false}
-                            onClick={() => {
-                                history.push('/produk')
-                            }}
-                        >
-                            <ListItemIcon>
-                                <StoreIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Produk" />
-                        </ListItem>
-
-                    }} />
-
-                    <Route path="/transaksi" children={({ match, history }) => {
-
-                        return <ListItem
-                            button
-                            selected={match ? true : false}
-                            onClick={() => {
-                                history.push('/transaksi')
-                            }}
-                        >
-                            <ListItemIcon>
-                                <ShoppingCartIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Transaksi" />
-                        </ListItem>
-
-                    }} />
-                    <Route path="/pengaturan" children={({ match, history }) => {
-
-                        return <ListItem
-                            button
-                            selected={match ? true : false}
-                            onClick={() => {
-                                history.push('/pengaturan')
-                            }}
-                        >
-                            <ListItemIcon>
-                                <SettingsIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Pengaturan" />
-                        </ListItem>
-
-                    }} />
-
-
-
-                </List>
-            </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
@@ -176,7 +87,7 @@ export default function Private() {
                     <Switch>
                         <Route path="/pengaturan" component={Pengaturan} />
 
-                        <Route component={Home} />
+                        <Route path="/chat" component={Chat} />
                     </Switch>
 
                 </Container>

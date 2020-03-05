@@ -23,7 +23,7 @@ function AppLoading() {
                     component="h2"
                     className={classes.title}
                 >
-                    Aplikasi Penjualan
+                    Chat App
                 </Typography>
                 <LinearProgress />
             </div>
