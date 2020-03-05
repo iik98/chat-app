@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,9 +12,12 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import InputBase from '@material-ui/core/InputBase';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
 import SearchIcon from '@material-ui/icons/Search';
 
 import useStyles from './styles/add';
+import { useData } from '../../../components/DataProvider';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -23,7 +26,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function AddChatDialog({ open, handleClose }) {
     const classes = useStyles();
 
-
+    const { profiles } = useData();
     return (
         <Dialog
             fullScreen
@@ -55,13 +58,20 @@ export default function AddChatDialog({ open, handleClose }) {
                 </Toolbar>
             </AppBar>
             <List>
-                <ListItem button>
-                    <ListItemText primary="Phone ringtone" secondary="Titania" />
-                </ListItem>
-                <Divider />
-                <ListItem button>
-                    <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-                </ListItem>
+                {profiles.map((profile) => {
+
+                    return <React.Fragment key={profile.id}>
+                        <ListItem button>
+                            <ListItemAvatar>
+                                <Avatar alt={profile.nama} src={profile.foto} className={classes.orange} />
+                            </ListItemAvatar>
+                            <ListItemText primary={profile.nama} secondary={profile.deskripsi || ''} />
+                        </ListItem>
+                        <Divider />
+                    </React.Fragment>
+                })}
+
+
             </List>
         </Dialog>
     );

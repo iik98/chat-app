@@ -94,9 +94,9 @@ function Registrasi() {
                 // 1. buat user auth baru
                 const { user } = await auth.createUserWithEmailAndPassword(form.email, form.password);
 
-                // 2. simpan data nama dan email user di doc users/{userId} firestore
-                await firestore.doc(`users/${user.uid}`).set({
-                    email: form.email,
+                // 2. simpan data nama dan email user di doc profiles/{userId} firestore
+                await firestore.doc(`profiles/${user.uid}`).set({
+
                     nama: form.nama,
                     createdAt: FieldValue.serverTimestamp()
                 }, { merge: true })
