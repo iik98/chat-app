@@ -1,13 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -20,7 +15,9 @@ import HomeIcon from '@material-ui/icons/Home';
 import StoreIcon from '@material-ui/icons/Store';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import SettingsIcon from '@material-ui/icons/Settings';
-
+import SearchIcon from '@material-ui/icons/Search';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 //styles
 import useStyles from './styles';
 
@@ -37,13 +34,18 @@ import { useFirebase } from '../../components/FirebaseProvider';
 
 export default function Private() {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+
     const { auth } = useFirebase();
-    const handleDrawerOpen = () => {
-        setOpen(true);
+
+    // menu
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = event => {
+        setAnchorEl(event.currentTarget);
     };
-    const handleDrawerClose = () => {
-        setOpen(false);
+
+    const handleClose = () => {
+        setAnchorEl(null);
     };
 
     const handleSignOut = (e) => {
@@ -56,7 +58,7 @@ export default function Private() {
     return (
         <div className={classes.root}>
 
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+            <AppBar position="absolute">
                 <Toolbar className={classes.toolbar}>
 
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
@@ -67,8 +69,11 @@ export default function Private() {
 
                         </Switch>
                     </Typography>
+                    <IconButton aria-label="search" color="inherit">
+                        <SearchIcon />
+                    </IconButton>
                     <IconButton
-                        // onClick={handleSignOut}
+                        onClick={handleClick}
                         color="inherit"
                         aria-label="display more actions"
                         edge="end"
@@ -77,6 +82,20 @@ export default function Private() {
                         <MoreIcon />
 
                     </IconButton>
+                    <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                    >
+                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+
+                        <MenuItem onClick={() => {
+                            handleSignOut()
+                            handleClose()
+                        }}>Logout</MenuItem>
+                    </Menu>
                 </Toolbar>
             </AppBar>
 
