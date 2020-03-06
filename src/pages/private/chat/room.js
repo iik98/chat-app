@@ -39,7 +39,7 @@ export default function ChatRoom() {
             type: types.CHANGE_TOOLBAR,
             toolbar: <>
                 <IconButton edge="start" onClick={() => {
-                    history.goBack();
+                    history.push("/chat");
                 }} color="inherit" aria-label="back to home">
                     <BackIcon />
                 </IconButton>
