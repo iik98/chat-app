@@ -9,6 +9,8 @@ import firebaseConfig from '../config/firebase';
 
 import { useAuthState } from 'react-firebase-hooks/auth'
 
+import AppLoading from './AppLoading';
+
 firebase.initializeApp(firebaseConfig);
 
 
@@ -30,6 +32,10 @@ function FirebaseProvider(props) {
 
 
     const [user, loading, error] = useAuthState(auth);
+
+    if (loading) {
+        return <AppLoading />
+    }
 
     return <FirebaseContext.Provider value={{
         auth,

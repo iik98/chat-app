@@ -116,7 +116,7 @@ function Login(props) {
         return <AppLoading />
     }
     if (user) {
-        const redirecTo = location.state && location.state.from && location.state.from.pathname ? location.state.from.pathname : '/';
+        const redirecTo = location.state && location.state.from && location.state.from.pathname ? location.state.from.pathname : '/chat';
         return <Redirect to={redirecTo} />
     }
 

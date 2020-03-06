@@ -1,25 +1,14 @@
 import React from 'react';
-import clsx from 'clsx';
 
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import SignOutIcon from '@material-ui/icons/ExitToApp';
-import HomeIcon from '@material-ui/icons/Home';
-import StoreIcon from '@material-ui/icons/Store';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import SettingsIcon from '@material-ui/icons/Settings';
-
+import MoreIcon from '@material-ui/icons/MoreVert';
+import SearchIcon from '@material-ui/icons/Search';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 //styles
 import useStyles from './styles';
 
@@ -28,21 +17,29 @@ import { Switch, Route } from 'react-router-dom';
 
 // komponen halaman private
 import Pengaturan from './pengaturan';
-import Home from './home';
+import Chat from './chat';
 
 //firebase hook
 import { useFirebase } from '../../components/FirebaseProvider';
 
+// create app bar context
+const AppBarContext = React.createContext();
+
 
 export default function Private() {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+
     const { auth } = useFirebase();
-    const handleDrawerOpen = () => {
-        setOpen(true);
+
+    // menu
+    const [anchorElMenu, setAnchorElMenu] = React.useState(null);
+
+    const handleClickMenu = event => {
+        setAnchorElMenu(event.currentTarget);
     };
-    const handleDrawerClose = () => {
-        setOpen(false);
+
+    const handleCloseMenu = () => {
+        setAnchorElMenu(null);
     };
 
     const handleSignOut = (e) => {
@@ -53,136 +50,67 @@ export default function Private() {
     }
 
     return (
-        <div className={classes.root}>
+        <AppBarContext.Provider value={{
 
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                <Toolbar className={classes.toolbar}>
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="Open drawer"
-                        onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+        }}>
+            <div className={classes.root}>
+
+                <AppBar position="absolute">
+                    <Toolbar className={classes.toolbar}>
+
+                        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                            <Switch>
+
+                                <Route path="/pengaturan" children="Pengaturan" />
+                                <Route children="Chat App" />
+
+                            </Switch>
+                        </Typography>
+                        <IconButton aria-label="search" color="inherit">
+                            <SearchIcon />
+                        </IconButton>
+                        <IconButton
+                            onClick={handleClickMenu}
+                            color="inherit"
+                            aria-label="display more actions"
+                            edge="end"
+                        >
+
+                            <MoreIcon />
+
+                        </IconButton>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorElMenu}
+                            keepMounted
+                            open={Boolean(anchorElMenu)}
+                            onClose={handleCloseMenu}
+                        >
+                            <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
+
+                            <MenuItem onClick={() => {
+                                handleSignOut()
+                                handleCloseMenu()
+                            }}>Logout</MenuItem>
+                        </Menu>
+                    </Toolbar>
+                </AppBar>
+
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
+                    <Container maxWidth="lg" className={classes.container}>
+
                         <Switch>
-                            <Route path="/produk" children="Produk" />
-                            <Route path="/transaksi" children="Transaksi" />
-                            <Route path="/pengaturan" children="Pengaturan" />
-                            <Route children="Home" />
+                            <Route path="/pengaturan" component={Pengaturan} />
 
+                            <Route path="/chat" component={Chat} />
                         </Switch>
-                    </Typography>
-                    <IconButton
-                        onClick={handleSignOut}
-                        color="inherit">
 
-                        <SignOutIcon />
+                    </Container>
 
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
-                open={open}
-            >
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    <Route path="/" exact children={({ match, history }) => {
-
-                        return <ListItem
-                            button
-                            selected={match ? true : false}
-                            onClick={() => {
-                                history.push('/')
-                            }}
-                        >
-                            <ListItemIcon>
-                                <HomeIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Home" />
-                        </ListItem>
-
-                    }} />
-
-                    <Route path="/produk" children={({ match, history }) => {
-
-                        return <ListItem
-                            button
-                            selected={match ? true : false}
-                            onClick={() => {
-                                history.push('/produk')
-                            }}
-                        >
-                            <ListItemIcon>
-                                <StoreIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Produk" />
-                        </ListItem>
-
-                    }} />
-
-                    <Route path="/transaksi" children={({ match, history }) => {
-
-                        return <ListItem
-                            button
-                            selected={match ? true : false}
-                            onClick={() => {
-                                history.push('/transaksi')
-                            }}
-                        >
-                            <ListItemIcon>
-                                <ShoppingCartIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Transaksi" />
-                        </ListItem>
-
-                    }} />
-                    <Route path="/pengaturan" children={({ match, history }) => {
-
-                        return <ListItem
-                            button
-                            selected={match ? true : false}
-                            onClick={() => {
-                                history.push('/pengaturan')
-                            }}
-                        >
-                            <ListItemIcon>
-                                <SettingsIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Pengaturan" />
-                        </ListItem>
-
-                    }} />
-
-
-
-                </List>
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-
-                    <Switch>
-                        <Route path="/pengaturan" component={Pengaturan} />
-
-                        <Route component={Home} />
-                    </Switch>
-
-                </Container>
-
-            </main>
-        </div>
+                </main>
+            </div>
+        </AppBarContext.Provider>
     );
 }
 
