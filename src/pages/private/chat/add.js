@@ -64,7 +64,7 @@ export default function AddChatDialog({ open, handleClose }) {
 
         const newChatRef = await firestore.collection('chats').add(newChatData);
 
-        history.push(`/chats/${newChatRef.id}`);
+        history.push(`/chat/${newChatRef.id}`);
     }
     return (
         <Dialog
@@ -98,6 +98,8 @@ export default function AddChatDialog({ open, handleClose }) {
             </AppBar>
             <List>
                 {contacts.map((contact) => {
+                    if (contact.id === user.uid)
+                        return null
 
                     return <React.Fragment key={contact.id}>
                         <ListItem button onClick={handleOpenChatRoom(contact)}>

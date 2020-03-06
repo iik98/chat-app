@@ -27,7 +27,7 @@ export default function ChatList() {
     })
 
     const handleOpenChatRoom = chat => e => {
-        history.push(`chats/${chat.id}`);
+        history.push(`chat/${chat.id}`);
     }
 
     return <>
@@ -40,7 +40,7 @@ export default function ChatList() {
                         <ListItemAvatar>
                             <Avatar alt={profile.nama} src={profile.foto} className={classes.orange} />
                         </ListItemAvatar>
-                        <ListItemText primary={profile.nama} secondary={chat.last_message.text} />
+                        <ListItemText primary={profile.nama} secondary={chat.last_message.text || 'Belum ada pesan, kirim sekarang!'} />
                     </ListItem>
                     <Divider />
                 </React.Fragment>
