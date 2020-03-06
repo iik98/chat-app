@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext, useReducer } from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -25,12 +25,36 @@ import { useFirebase } from '../../components/FirebaseProvider';
 // create app bar context
 const AppBarContext = React.createContext();
 
+export function useAppBar() {
+
+    return useContext(AppBarContext)
+}
+
+const initialState = {
+    toolbar: null
+}
+
+export const types = {
+    CHANGE_TOOLBAR: 'CHANGE_TOOLBAR'
+}
+
+function reducer(state, action) {
+    console.log(action);
+    switch (action.type) {
+        case types.CHANGE_TOOLBAR:
+            return { ...state, toolbar: action.toolbar }
+        default:
+            return state;
+    }
+
+}
 
 export default function Private() {
     const classes = useStyles();
 
     const { auth } = useFirebase();
 
+    const [state, dispatch] = useReducer(reducer, initialState);
     // menu
     const [anchorElMenu, setAnchorElMenu] = React.useState(null);
 
@@ -51,24 +75,28 @@ export default function Private() {
 
     return (
         <AppBarContext.Provider value={{
-
+            dispatch
         }}>
             <div className={classes.root}>
 
                 <AppBar position="absolute">
                     <Toolbar className={classes.toolbar}>
 
-                        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                            <Switch>
+                        {state.toolbar ?
+                            state.toolbar
+                            :
+                            <>
+                                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                                    <Switch>
+                                        <Route path="/pengaturan" children="Pengaturan" />
+                                        <Route children="Chat App" />
+                                    </Switch>
+                                </Typography>
+                                <IconButton aria-label="search" color="inherit">
+                                    <SearchIcon />
+                                </IconButton>
 
-                                <Route path="/pengaturan" children="Pengaturan" />
-                                <Route children="Chat App" />
-
-                            </Switch>
-                        </Typography>
-                        <IconButton aria-label="search" color="inherit">
-                            <SearchIcon />
-                        </IconButton>
+                            </>}
                         <IconButton
                             onClick={handleClickMenu}
                             color="inherit"

@@ -45,11 +45,7 @@ export default function AddChatDialog({ open, handleClose }) {
         }
 
         const newChatData = {
-            user_ids: [
-                user.uid,
-                contact.id
-
-            ],
+            user_ids: [user.uid, contact.id],
             last_message: {
             },
             unread_count: {
@@ -61,13 +57,14 @@ export default function AddChatDialog({ open, handleClose }) {
                 [contact.id]: contact
             },
             created_at: FieldValue.serverTimestamp(),
-            updated_at: FieldValue.serverTimestamp()
+            updated_at: FieldValue.serverTimestamp(),
+
 
         }
-        console.log(newChatData)
 
-        await firestore.collection('chats').add(newChatData);
+        const newChatRef = await firestore.collection('chats').add(newChatData);
 
+        history.push(`/chat/${newChatRef.id}`);
     }
     return (
         <Dialog
@@ -101,6 +98,8 @@ export default function AddChatDialog({ open, handleClose }) {
             </AppBar>
             <List>
                 {contacts.map((contact) => {
+                    if (contact.id === user.uid)
+                        return null
 
                     return <React.Fragment key={contact.id}>
                         <ListItem button onClick={handleOpenChatRoom(contact)}>

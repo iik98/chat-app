@@ -11,6 +11,8 @@ import Private from './pages/private';
 import PrivateRoute from './components/PrivateRoute';
 import Landing from './pages/landing';
 
+import Fade from '@material-ui/core/Fade';
+
 // firebase context provider
 import FirebaseProvider from './components/FirebaseProvider';
 
@@ -31,6 +33,7 @@ function App() {
         <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
           <FirebaseProvider >
             <Router>
+
               <Switch>
                 <Route path="/" exact component={Landing} />
                 <Route path="/registrasi" component={Registrasi} />

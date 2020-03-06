@@ -124,9 +124,8 @@ function Login(props) {
     }
 
 
-    return <div className={classes.loginBlock}>
-                <div className={classes.loginOverlay}>
-                </div>
+    return <div className={classes.loginBlock}> 
+                <div className={classes.loginOverlay}></div>
                 <div className={classes.loginBox}>
                     <div className={classes.logoBox}>
                         <img src={logo} alt="logo" />
@@ -149,7 +148,7 @@ function Login(props) {
                                     required
                                     value={form.email}
                                     onChange={handleChange}
-                                    helperText={error.email || 'Email demo: demo@jagoreact.com'}
+                                    helperText={error.email}
                                     error={error.email ? true : false}
                                     disabled={isSubmitting}
                                 />
@@ -163,7 +162,7 @@ function Login(props) {
                                     required
                                     value={form.password}
                                     onChange={handleChange}
-                                    helperText={error.password || 'Password demo: 123456'}
+                                    helperText={error.password}
                                     error={error.password ? true : false}
                                     disabled={isSubmitting}
                                 />
@@ -193,11 +192,7 @@ function Login(props) {
                                         Lupa Password?
                                 </Typography>
                                 </div>
-
-
-
                             </form>
-
                         </Paper>
                     </Container>
                 </div>

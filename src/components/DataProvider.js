@@ -17,8 +17,8 @@ export default function DataProvider(props) {
     const chatsCol = firestore.collection('chats');
     const [profile, loadingProfile] = useDocumentData(profileDoc)
     const [contacts, loadingContacts] = useCollectionData(contactsCol.orderBy('nama'), { idField: 'id' });
-    const [chats, loadingChats] = useCollectionData(chatsCol.where("user_ids", "array-contains", user.uid), { idField: "id" });
-
+    const [chats, loadingChats, error] = useCollectionData(chatsCol.where("user_ids", "array-contains", user.uid).orderBy("updated_at", "desc"), { idField: "id" });
+    console.log(chats, error)
     if (loadingContacts || loadingProfile || loadingChats) {
         return <AppLoading />
     }
