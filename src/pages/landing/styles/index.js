@@ -1,8 +1,8 @@
 import { makeStyles } from '@material-ui/styles';
-import bg from '../../images/bg.png';
+import bg from '../../../images/bg.png';
 
 const useStyles = makeStyles(theme => ({
-    forpassBlock:{
+    landingBlock:{
         backgroundImage: `url(${bg})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100vh',
     },
-    forpassOverlay:{
+    landingOverlay:{
         backgroundImage: 'radial-gradient(50% 42%, '+ theme.palette.primary.light +' 50%, ' + theme.palette.primary.main + ' 99%)',
         opacity: '.9',
         width: '100%',
@@ -18,30 +18,47 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         zIndex: 1,
     },
-    forpassBox:{
+    landingBox:{
         position: 'relative',
+        width: '100%',
         height: '100%',
         zIndex: 2,
-        display: 'flex',
-        alignItems: 'center',
-        flexFlow: 'column nowrap',
     },
     logoBox:{
         width: 282,
         height: 69,
-        margin: '30px auto 20px',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        margin: 'auto',
     },
-    title: {
-        //color: theme.palette.primary.main
-        textAlign:'center',
-        marginBottom:theme.spacing(3)
+    btnBox:{
+        width: 240,
+        height: 120,
+        position: 'absolute',
+        top: 'auto',
+        left: 0,
+        right: 0,
+        bottom: 20,
+        margin: 'auto',
+        display: 'flex',
+        flexFlow: 'column nowrap',
     },
-    paper: {
-        padding: theme.spacing(2)
+    btnDaftar:{
+        color: theme.palette.primary.main,
+        backgroundColor: '#fff',
+        marginBottom: 20,
+    },
+    btnLogin:{
+        background: 'transparent',
+        color: '#fff',
+        border: 'solid 1px #fff',
     },
     buttons:{
         marginTop: theme.spacing(6)
-    }
+    },
 }))
 
 

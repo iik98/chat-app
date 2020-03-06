@@ -25,6 +25,9 @@ import AppLoading from '../../components/AppLoading';
 // notistack hook
 import { useSnackbar } from 'notistack';
 
+// import logo
+import logo from '../../images/logo.png';
+
 function LupaPassword() {
     const classes = useStyles();
 
@@ -122,52 +125,61 @@ function LupaPassword() {
     }
 
     console.log(user)
-    return <Container maxWidth="xs">
-        <Paper className={classes.paper}>
-            <Typography
-                variant="h5"
-                component="h1"
-                className={classes.title}>Lupa Password</Typography>
+    return <div className={classes.forpassBlock}>
+            <div className={classes.forpassOverlay}>
+            </div>
+            <div className={classes.forpassBox}>
+                <div className={classes.logoBox}>
+                    <img src={logo} alt="logo" />
+                </div>
+                <Container maxWidth="xs">
+                <Paper className={classes.paper}>
+                    <Typography
+                        variant="h5"
+                        component="h1"
+                        className={classes.title}>Lupa Password</Typography>
 
-            <form onSubmit={handleSubmit} noValidate>
-                <TextField
-                    id="email"
-                    type="email"
-                    name="email"
-                    margin="normal"
-                    label="Alamat Email"
-                    fullWidth
-                    required
-                    value={form.email}
-                    onChange={handleChange}
-                    helperText={error.email}
-                    error={error.email ? true : false}
-                    disabled={isSubmitting}
-                />
-                <Grid container className={classes.buttons}>
-                    <Grid item xs>
-                        <Button
+                    <form onSubmit={handleSubmit} noValidate>
+                        <TextField
+                            id="email"
+                            type="email"
+                            name="email"
+                            margin="normal"
+                            label="Alamat Email"
+                            fullWidth
+                            required
+                            value={form.email}
+                            onChange={handleChange}
+                            helperText={error.email}
+                            error={error.email ? true : false}
                             disabled={isSubmitting}
-                            type="submit" color="primary" variant="contained"
-                            size="large"
-                        >Kirim</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button
-                            disabled={isSubmitting}
-                            component={Link}
-                            variant="contained"
-                            size="large"
-                            to="/login"
-                        >Login</Button>
-                    </Grid>
-                </Grid>
+                        />
+                        <Grid container className={classes.buttons}>
+                            <Grid item xs>
+                                <Button
+                                    disabled={isSubmitting}
+                                    type="submit" color="primary" variant="contained"
+                                    size="large"
+                                >Kirim</Button>
+                            </Grid>
+                            <Grid item>
+                                <Button
+                                    disabled={isSubmitting}
+                                    component={Link}
+                                    variant="contained"
+                                    size="large"
+                                    to="/login"
+                                >Login</Button>
+                            </Grid>
+                        </Grid>
 
 
-            </form>
+                    </form>
 
-        </Paper>
-    </Container>
+                </Paper>
+            </Container>
+        </div>
+    </div>
 }
 
 export default LupaPassword;

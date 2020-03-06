@@ -22,6 +22,9 @@ import { useFirebase } from '../../components/FirebaseProvider';
 // app components
 import AppLoading from '../../components/AppLoading';
 
+// import logo
+import logo from '../../images/logo.png';
+
 function Login(props) {
     const { location } = props;
     const classes = useStyles();
@@ -121,75 +124,79 @@ function Login(props) {
     }
 
 
-    return <Container maxWidth="xs">
-        <Paper className={classes.paper}>
-            <Typography
-                variant="h5"
-                component="h1"
-                className={classes.title}>Login</Typography>
+    return <div className={classes.loginBlock}> 
+                <div className={classes.loginOverlay}></div>
+                <div className={classes.loginBox}>
+                    <div className={classes.logoBox}>
+                        <img src={logo} alt="logo" />
+                    </div>
+                    <Container maxWidth="xs">
+                        <Paper className={classes.paper}>
+                            <Typography
+                                variant="h5"
+                                component="h1"
+                                className={classes.title}>Login</Typography>
 
-            <form onSubmit={handleSubmit} noValidate>
-                <TextField
-                    id="email"
-                    type="email"
-                    name="email"
-                    margin="normal"
-                    label="Alamat Email"
-                    fullWidth
-                    required
-                    value={form.email}
-                    onChange={handleChange}
-                    helperText={error.email}
-                    error={error.email ? true : false}
-                    disabled={isSubmitting}
-                />
-                <TextField
-                    id="password"
-                    type="password"
-                    name="password"
-                    margin="normal"
-                    label="Password"
-                    fullWidth
-                    required
-                    value={form.password}
-                    onChange={handleChange}
-                    helperText={error.password}
-                    error={error.password ? true : false}
-                    disabled={isSubmitting}
-                />
+                            <form onSubmit={handleSubmit} noValidate>
+                                <TextField
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    margin="normal"
+                                    label="Alamat Email"
+                                    fullWidth
+                                    required
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    helperText={error.email}
+                                    error={error.email ? true : false}
+                                    disabled={isSubmitting}
+                                />
+                                <TextField
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    margin="normal"
+                                    label="Password"
+                                    fullWidth
+                                    required
+                                    value={form.password}
+                                    onChange={handleChange}
+                                    helperText={error.password}
+                                    error={error.password ? true : false}
+                                    disabled={isSubmitting}
+                                />
 
 
-                <Grid container className={classes.buttons}>
+                                <Grid container className={classes.buttons}>
 
-                    <Grid item xs>
-                        <Button
-                            disabled={isSubmitting}
-                            type="submit" color="primary" variant="contained"
-                            size="large"
-                        >Login</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button
-                            disabled={isSubmitting}
-                            component={Link}
-                            variant="contained"
-                            size="large"
-                            to="/registrasi"
-                        >Daftar</Button>
-                    </Grid>
-                </Grid>
-                <div className={classes.forgotPassword}>
-                    <Typography component={Link} to="/lupa-password" >
-                        Lupa Password?
-                </Typography>
+                                    <Grid item xs>
+                                        <Button
+                                            disabled={isSubmitting}
+                                            type="submit" color="primary" variant="contained"
+                                            size="large"
+                                        >Login</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button
+                                            disabled={isSubmitting}
+                                            component={Link}
+                                            variant="contained"
+                                            size="large"
+                                            to="/registrasi"
+                                        >Daftar</Button>
+                                    </Grid>
+                                </Grid>
+                                <div className={classes.forgotPassword}>
+                                    <Typography component={Link} to="/lupa-password" >
+                                        Lupa Password?
+                                </Typography>
+                                </div>
+                            </form>
+                        </Paper>
+                    </Container>
                 </div>
-
-
-
-            </form>
-
-        </Paper>
-    </Container>
+            </div>
 }
 
 export default Login;
