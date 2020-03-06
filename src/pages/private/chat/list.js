@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,15 +16,29 @@ import useStyles from './styles/list';
 import { useData } from '../../../components/DataProvider';
 import { useFirebase } from '../../../components/FirebaseProvider';
 import { useHistory } from 'react-router-dom';
+import { useAppBar, types } from '..';
 
 export default function ChatList() {
     const classes = useStyles();
     const history = useHistory();
     const { chats } = useData();
     const { user } = useFirebase();
+    const { dispatch } = useAppBar();
     const [chatDialog, setChatDialog] = useState({
         open: false
     })
+
+
+    useEffect(() => {
+
+
+        return () => {
+            dispatch({
+                type: types.CHANGE_TOOLBAR,
+                toolbar: null
+            })
+        }
+    }, [dispatch])
 
     const handleOpenChatRoom = chat => e => {
         history.push(`chat/${chat.id}`);
