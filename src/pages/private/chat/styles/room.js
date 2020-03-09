@@ -164,6 +164,9 @@ const useStyles = makeStyles(theme => ({
         margin: 'auto',
         width: 110,
     },
+    messagesBox: {
+        paddingBottom: theme.spacing(4)
+    }
 }))
 
 

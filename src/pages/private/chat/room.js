@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,27 +15,39 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { useAppBar, types } from '../index';
 import { useData } from '../../../components/DataProvider';
 import { useParams, useHistory } from 'react-router-dom';
-import { useFirebase } from '../../../components/FirebaseProvider';
+import { useFirebase, FieldValue, firestore } from '../../../components/FirebaseProvider';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 import useStyles from './styles/room';
 
+import groupBy from 'lodash/groupBy';
+import { animateScroll as scroll } from 'react-scroll';
+import { unixToIsoDate, unixToTime, isoToRelative } from '../../../utils/datetime';
 export default function ChatRoom() {
     const params = useParams();
     const history = useHistory();
     const classes = useStyles();
     const { dispatch } = useAppBar();
-    const { chats } = useData();
+    const { chats, profile } = useData();
     const { user } = useFirebase();
-
+    const activeChatRef = firestore.doc(`chats/${params.chatId}`);
+    const chatMessagesRef = activeChatRef.collection('messages');
     const [activeChat, setActiveChat] = useState({});
+    const [activeContact, setActiveContact] = useState({})
+    const [messages, loading, error] = useCollectionData(chatMessagesRef.orderBy("created_at", "asc"), { idField: 'id' });
+    // create new ref
+    const textRef = useRef(null);
 
+    const [isSending, setSending] = useState(false);
+
+    // useEffect(() => {
+    //     scroll.scrollToBottom({
+    //         offset: 0,
+    //         isDynamic: true,
+    //         duration: 10
+    //     });
+    // })
     useEffect(() => {
-        console.log('once', activeChat)
-        let activeContact = {};
 
-        if (activeChat.user_profiles) {
-            const findContactId = Object.keys(activeChat.user_profiles).find(uid => uid !== user.uid);
-            activeContact = findContactId && activeChat.user_profiles[findContactId];
-        }
 
 
         dispatch({
@@ -59,21 +71,77 @@ export default function ChatRoom() {
                 toolbar: null
             });
         }
-    }, [dispatch, activeChat, user.uid, history, classes]);
+    }, [dispatch, activeChat, history, classes, activeContact]);
 
     useEffect(() => {
-        console.log('how many', params.chatId)
+
 
         const findChat = chats.find(chat => chat.id === params.chatId);
 
         if (findChat) {
             setActiveChat(findChat);
-        }
-    }, [chats, setActiveChat, params.chatId])
 
+            let activeContact = {};
+
+            if (findChat.user_profiles) {
+                const findContactId = Object.keys(findChat.user_profiles).find(uid => uid !== user.uid);
+                activeContact = findContactId && findChat.user_profiles[findContactId];
+                setActiveContact(activeContact);
+            }
+        }
+    }, [chats, setActiveChat, setActiveContact, params.chatId, user.uid])
+
+
+    const sendChat = async (e) => {
+
+        e.preventDefault();
+        if (isSending) {
+            return null
+        }
+        if (textRef.current.value) {
+            setSending(true)
+            await activeChatRef.set({
+                updated_at: FieldValue.serverTimestamp(),
+
+                last_message: {
+                    from_user_id: user.uid,
+                    text: textRef.current.value,
+                    created_at: FieldValue.serverTimestamp(),
+                },
+                unread_count: {
+                    [user.uid]: 0,
+                    [activeContact.id]: FieldValue.increment(1)
+                },
+                user_profiles: {
+                    [user.uid]: profile,
+                    [activeContact.id]: activeContact
+                }
+            }, { merge: true });
+
+            await chatMessagesRef.add({
+                from_user_id: user.uid,
+                to_user_id: activeContact.id,
+                text: textRef.current.value,
+                created_at: FieldValue.serverTimestamp(),
+                is_read: false,
+                is_pushed: false,
+            });
+            setSending(false)
+
+            textRef.current.value = ''
+            //textRef.current.focus()
+        }
+    }
+
+    console.log(messages, loading, error)
     return <>
+        <div className={classes.messagesBox}>
+            {messages ? <ul>
+                {messages.map(message => <li key={message.id}>{JSON.stringify(message)}</li>)}
+            </ul> : <p>belum ada pesan</p>}
+        </div>
         <div className={classes.floatingBottom}>
-            <form>
+            <form onSubmit={sendChat}>
                 <Grid container direction="column" spacing={3} alignItems="start">
                     <Grid item xs={12}>
                         <Typography className={classes.chatDay} variant="caption">Today</Typography>
@@ -134,6 +202,15 @@ export default function ChatRoom() {
                                     </IconButton>
                                 </InputAdornment>
                             }}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    sendChat(e)
+                                }
+                            }}
+                            inputProps={{
+                                ref: textRef
+                            }}
+                            placeholder="Ketik pesan"
                         />
                     </Grid>
                 </Grid>
