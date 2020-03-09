@@ -73,7 +73,7 @@ export default function AddChatDialog({ open, handleClose }) {
             onClose={handleClose}
             TransitionComponent={Transition}>
             <AppBar className={classes.appBar}>
-                <Toolbar>
+                <Toolbar color="primary">
                     <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
                         <CloseIcon />
                     </IconButton>

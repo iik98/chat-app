@@ -27,7 +27,7 @@ export default function Landing() {
                 </div>
                 <div className={classes.landingBox}>
                     <div className={classes.logoBox}>
-                            <img src={logo} alt="logo" />
+                        <img src={logo} alt="logo" />
                     </div>
                     <div className={classes.btnBox}>
                         <Button className={classes.btnDaftar} variant="contained" component={Link} to="/registrasi">

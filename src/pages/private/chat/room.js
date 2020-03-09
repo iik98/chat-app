@@ -5,6 +5,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import SendIcon from '@material-ui/icons/Send';
+import CancelScheduleSendIcon from '@material-ui/icons/CancelScheduleSend';
+import CheckIcon from '@material-ui/icons/Check';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
@@ -71,8 +74,54 @@ export default function ChatRoom() {
     return <>
         <div className={classes.floatingBottom}>
             <form>
-                <Grid container spacing={3}>
-
+                <Grid container direction="column" spacing={3} alignItems="start">
+                    <Grid item xs={12}>
+                        <Typography className={classes.chatDay} variant="caption">Today</Typography>
+                    </Grid>
+                    <div className={classes.chatWindow}>
+                        <div className={classes.yourChatBubble}>
+                            <div className={classes.yourTextBody}>
+                                <Typography className={classes.yourText} variant="body1" >bob</Typography>
+                                <Typography className={classes.yourTimeStamp} variant="caption">11:12</Typography>
+                            </div>
+                        </div>
+                        <div className={classes.myChatBubble}>
+                            <div className={classes.myTextBody}>
+                                <Typography className={classes.myText} variant="body1">Heyy</Typography>
+                                <div className={classes.deliveryDetail}>
+                                    <CheckIcon className={classes.sentIcon} />
+                                    <DoneAllIcon className={classes.readIcon} />
+                                    <Typography className={classes.myTimeStamp} variant="caption">
+                                        12:00
+                                    </Typography>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={classes.yourChatBubble}>
+                            <div className={classes.yourTextBody}>
+                                <Typography className={classes.yourText} variant="body1" >makan gak?</Typography>
+                                <Typography className={classes.yourTimeStamp} variant="caption">12:01</Typography>
+                            </div>
+                        </div>
+                        <div className={classes.myChatBubble}>
+                            <div className={classes.myTextBody}>
+                                <Typography className={classes.myText} variant="body1">entar</Typography>
+                                <div className={classes.deliveryDetail}>
+                                    <CheckIcon className={classes.sentIcon} />
+                                    <DoneAllIcon className={classes.readIcon} />
+                                    <Typography className={classes.myTimeStamp} variant="caption">
+                                        12:02
+                                    </Typography>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={classes.yourChatBubble}>
+                            <div className={classes.yourTextBody}>
+                                <Typography className={classes.yourText} variant="body1" >jam?</Typography>
+                                <Typography className={classes.yourTimeStamp} variant="caption">12:04</Typography>
+                            </div>
+                        </div>
+                    </div>
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
@@ -86,10 +135,7 @@ export default function ChatRoom() {
                                 </InputAdornment>
                             }}
                         />
-
                     </Grid>
-
-
                 </Grid>
             </form>
         </div>
