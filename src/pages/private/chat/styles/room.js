@@ -15,12 +15,14 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         bottom: 0,
         width: "100%",
-        padding: theme.spacing(1)
+        padding: theme.spacing(1),
+        zIndex: 2,
+        backgroundColor: '#fff',
     },
     chatWindow: {
         width: '100%',
         margin: '0 auto',
-        padding: '82px 15px 15px',
+        padding: '0 15px 15px',
         position: 'relative',
         overflowY: 'auto',
         height: 'calc(100vh - 72px)',

@@ -135,61 +135,61 @@ export default function ChatRoom() {
 
     console.log(messages, loading, error)
     return <>
-        <div className={classes.messagesBox}>
+        {/* <div className={classes.messagesBox}>
             {messages ? <ul>
                 {messages.map(message => <li key={message.id}>{JSON.stringify(message)}</li>)}
             </ul> : <p>belum ada pesan</p>}
+        </div> */}
+        <div className={classes.chatWindow}>
+            <div className={classes.chatDayWrap}>
+                <Typography className={classes.chatDay} variant="caption">Today</Typography>
+            </div>
+            <div className={classes.yourChatBubble}>
+                <div className={classes.yourTextBody}>
+                    <Typography className={classes.yourText} variant="body1" >bob</Typography>
+                    <Typography className={classes.yourTimeStamp} variant="caption">11:12</Typography>
+                </div>
+            </div>
+            <div className={classes.myChatBubble}>
+                <div className={classes.myTextBody}>
+                    <Typography className={classes.myText} variant="body1">Heyy</Typography>
+                    <div className={classes.deliveryDetail}>
+                        <CheckIcon className={classes.sentIcon} />
+                        <DoneAllIcon className={classes.readIcon} />
+                        <Typography className={classes.myTimeStamp} variant="caption">
+                            12:00
+                        </Typography>
+                    </div>
+                </div>
+            </div>
+            <div className={classes.yourChatBubble}>
+                <div className={classes.yourTextBody}>
+                    <Typography className={classes.yourText} variant="body1" >makan gak?</Typography>
+                    <Typography className={classes.yourTimeStamp} variant="caption">12:01</Typography>
+                </div>
+            </div>
+            <div className={classes.myChatBubble}>
+                <div className={classes.myTextBody}>
+                    <Typography className={classes.myText} variant="body1">entar</Typography>
+                    <div className={classes.deliveryDetail}>
+                        <CheckIcon className={classes.sentIcon} />
+                        <DoneAllIcon className={classes.readIcon} />
+                        <Typography className={classes.myTimeStamp} variant="caption">
+                            12:02
+                        </Typography>
+                    </div>
+                </div>
+            </div>
+            <div className={classes.yourChatBubble}>
+                <div className={classes.yourTextBody}>
+                    <Typography className={classes.yourText} variant="body1" >jam?</Typography>
+                    <Typography className={classes.yourTimeStamp} variant="caption">12:04</Typography>
+                </div>
+            </div>
         </div>
         <div className={classes.floatingBottom}>
             <form onSubmit={sendChat}>
-                <Grid container direction="column" spacing={3} alignItems="start">
-                    <Grid item xs={12}>
-                        <Typography className={classes.chatDay} variant="caption">Today</Typography>
-                    </Grid>
-                    <div className={classes.chatWindow}>
-                        <div className={classes.yourChatBubble}>
-                            <div className={classes.yourTextBody}>
-                                <Typography className={classes.yourText} variant="body1" >bob</Typography>
-                                <Typography className={classes.yourTimeStamp} variant="caption">11:12</Typography>
-                            </div>
-                        </div>
-                        <div className={classes.myChatBubble}>
-                            <div className={classes.myTextBody}>
-                                <Typography className={classes.myText} variant="body1">Heyy</Typography>
-                                <div className={classes.deliveryDetail}>
-                                    <CheckIcon className={classes.sentIcon} />
-                                    <DoneAllIcon className={classes.readIcon} />
-                                    <Typography className={classes.myTimeStamp} variant="caption">
-                                        12:00
-                                    </Typography>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={classes.yourChatBubble}>
-                            <div className={classes.yourTextBody}>
-                                <Typography className={classes.yourText} variant="body1" >makan gak?</Typography>
-                                <Typography className={classes.yourTimeStamp} variant="caption">12:01</Typography>
-                            </div>
-                        </div>
-                        <div className={classes.myChatBubble}>
-                            <div className={classes.myTextBody}>
-                                <Typography className={classes.myText} variant="body1">entar</Typography>
-                                <div className={classes.deliveryDetail}>
-                                    <CheckIcon className={classes.sentIcon} />
-                                    <DoneAllIcon className={classes.readIcon} />
-                                    <Typography className={classes.myTimeStamp} variant="caption">
-                                        12:02
-                                    </Typography>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={classes.yourChatBubble}>
-                            <div className={classes.yourTextBody}>
-                                <Typography className={classes.yourText} variant="body1" >jam?</Typography>
-                                <Typography className={classes.yourTimeStamp} variant="caption">12:04</Typography>
-                            </div>
-                        </div>
-                    </div>
+                <Grid container direction="column" spacing={3}>
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
