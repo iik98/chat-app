@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { useFirebase } from '../../../components/FirebaseProvider';
 
 // styles
-import useStyles from './styles/pengguna';
+import useStyles from './styles/avatar';
 
 import { useSnackbar } from 'notistack';
 
@@ -23,32 +23,10 @@ function Pengguna() {
     })
     const { enqueueSnackbar } = useSnackbar();
     const [isSubmitting, setSubmitting] = useState(false);
-    const displayNameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
 
-    const saveDisplayName = async (e) => {
 
-        const displayName = displayNameRef.current.value;
-        console.log(displayName);
-
-        if (!displayName) {
-            setError({
-                displayName: 'Nama wajib diisi'
-            })
-        } else if (displayName !== user.displayName) {
-
-            setError({
-                displayName: ''
-            })
-            setSubmitting(true);
-            await user.updateProfile({
-                displayName
-            })
-            setSubmitting(false);
-            enqueueSnackbar('Data pengguna berhasil diperbarui', { variant: 'success' })
-        }
-    }
 
     const updateEmail = async (e) => {
         const email = emailRef.current.value;
@@ -157,20 +135,7 @@ function Pengguna() {
 
     }
     return <div className={classes.pengaturanPengguna}>
-        <TextField
-            id="displayName"
-            name="displayName"
-            label="Nama"
-            margin="normal"
-            defaultValue={user.displayName}
-            inputProps={{
-                ref: displayNameRef,
-                onBlur: saveDisplayName
-            }}
-            disabled={isSubmitting}
-            helperText={error.displayName}
-            error={error.displayName ? true : false}
-        />
+
 
         <TextField
             id="email"
