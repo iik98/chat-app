@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import useStyles from './styles';
 
 //react router 
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 
 // komponen halaman private
 import Pengaturan from './pengaturan';
@@ -53,7 +53,7 @@ export default function Private() {
     const classes = useStyles();
 
     const { auth } = useFirebase();
-
+    const history = useHistory();
     const [state, dispatch] = useReducer(reducer, initialState);
     // menu
     const [anchorElMenu, setAnchorElMenu] = React.useState(null);
@@ -92,9 +92,9 @@ export default function Private() {
                                         <Route children="Chat App" />
                                     </Switch>
                                 </Typography>
-                                <IconButton aria-label="search" color="inherit">
+                                {/* <IconButton aria-label="search" color="inherit">
                                     <SearchIcon />
-                                </IconButton>
+                                </IconButton> */}
 
                             </>}
                         <IconButton
@@ -114,7 +114,10 @@ export default function Private() {
                             open={Boolean(anchorElMenu)}
                             onClose={handleCloseMenu}
                         >
-                            <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
+                            <MenuItem onClick={() => {
+                                history.push("/pengaturan")
+                                handleCloseMenu()
+                            }}>Pengaturan</MenuItem>
 
                             <MenuItem onClick={() => {
                                 handleSignOut()

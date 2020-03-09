@@ -1,46 +1,56 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 //material-ui
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Avatar from '@material-ui/core/Avatar';
+import BackIcon from '@material-ui/icons/ArrowBack';
+import Grid from '@material-ui/core/Grid';
 
-import { Switch, Route, Redirect } from 'react-router-dom';
-// komponen halaman pengguna
-import Pengguna from './pengguna';
-import Toko from './toko';
-
+// page components
+import UploadAvatar from './avatar';
 // styles
 import useStyles from './styles';
 
+import { useAppBar, types } from '../index';
+import { useHistory } from 'react-router-dom';
+
 function Pengaturan(props) {
-
-    const { location, history } = props;
+    const history = useHistory();
+    const { dispatch } = useAppBar();
     const classes = useStyles();
-    const handleChangeTab = (event, value) => {
 
-        history.push(value);
-    }
+    useEffect(() => {
+
+        dispatch({
+            type: types.CHANGE_TOOLBAR,
+            toolbar: <>
+                <IconButton edge="start" onClick={() => {
+
+                    history.push("/chat");
+                }} color="inherit" aria-label="back to home">
+                    <BackIcon />
+                </IconButton>
+
+                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                    Pengaturan
+                </Typography>
+            </>
+        }, [classes])
+        return () => {
+            dispatch({
+                type: types.CHANGE_TOOLBAR,
+                toolbar: null
+            })
+        }
+    })
 
     return (
-        <Paper square>
-            <Tabs
-                value={location.pathname}
-                indicatorColor="primary"
-                textColor="primary"
-                onChange={handleChangeTab}
-            >
-                <Tab label="Pengguna" value="/pengaturan/pengguna" />
-                <Tab label="Toko" value="/pengaturan/toko" />
-            </Tabs>
-            <div className={classes.tabContent}>
-                <Switch>
-                    <Route path="/pengaturan/pengguna" component={Pengguna} />
-                    <Route path="/pengaturan/toko" component={Toko} />
-                    <Redirect to="/pengaturan/pengguna" />
-                </Switch>
-            </div>
-        </Paper>
+        <Grid container spacing={3}>
+            <Grid item xs={12} className={classes.avatar}>
+                <UploadAvatar />
+            </Grid>
+        </Grid>
     )
 }
 

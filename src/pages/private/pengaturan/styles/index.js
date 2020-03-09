@@ -2,9 +2,11 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles(theme => ({
+    title: {
+        flexGrow: 1,
+    },
+    avatar: {
 
-    tabContent: {
-        padding: theme.spacing(2)
     }
 
 }))
