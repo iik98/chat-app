@@ -8,14 +8,18 @@ const useStyles = makeStyles(theme => ({
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
         width: '100%',
-        height: '100vh',
+        height: 310,
+        borderRadius: '0 0 100% 100%',
     },
     loginOverlay:{
         backgroundImage: 'radial-gradient(50% 42%, '+ theme.palette.primary.light +' 50%, ' + theme.palette.primary.main + ' 99%)',
         opacity: '.9',
         width: '100%',
-        height: '100%',
+        height: 320,
         position: 'absolute',
+        top: 0,
+        left: 0,
+        borderRadius: '0 0 100% 100%',
         zIndex: 1,
     },
     loginBox:{
@@ -37,7 +41,8 @@ const useStyles = makeStyles(theme => ({
         marginBottom:theme.spacing(3)
     },
     paper: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        boxShadow: 'none',
     },
     buttons:{
         marginTop: theme.spacing(6)
