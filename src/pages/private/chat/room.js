@@ -139,7 +139,7 @@ export default function ChatRoom() {
                 is_pushed: false,
             });
             setSending(false)
-
+            // await setTyping(false)({});
             textRef.current.value = ''
             //textRef.current.focus()
         }
