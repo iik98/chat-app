@@ -8,6 +8,7 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import InfoIcon from '@material-ui/icons/Info';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
@@ -106,6 +107,32 @@ function Pengaturan(props) {
                                 color="textPrimary"
                             >
                                 muhammadalfatih@mail.com
+                            </Typography>
+                            </React.Fragment>
+                        }
+                        />
+                        <ListItemSecondaryAction>
+                            <IconButton className={classes.editBtn} edge="end" aria-label="edit">
+                                <EditIcon />
+                            </IconButton>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                    <Divider variant="inset" component="li" />
+                    <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                            <InfoIcon className={classes.iconList} />
+                        </ListItemAvatar>
+                        <ListItemText
+                        primary="Deskripsi"
+                        secondary={
+                            <React.Fragment>
+                            <Typography
+                                component="p"
+                                variant="body2"
+                                className={classes.inline}
+                                color="textPrimary"
+                            >
+                                Available
                             </Typography>
                             </React.Fragment>
                         }
