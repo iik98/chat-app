@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Route, Redirect } from 'react-router-dom';
-
+import Fade from '@material-ui/core/Fade';
 import { useFirebase } from './FirebaseProvider';
 
 import DataProvider from './DataProvider';

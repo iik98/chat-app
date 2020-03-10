@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -32,6 +32,7 @@ export default function AddChatDialog({ open, handleClose }) {
 
     const { contacts, chats, profile } = useData();
     const { user } = useFirebase();
+    const [filter, setFilter] = useState('');
 
     const handleOpenChatRoom = contact => async () => {
 
@@ -66,6 +67,13 @@ export default function AddChatDialog({ open, handleClose }) {
 
         history.push(`/chat/${newChatRef.id}`);
     }
+
+
+    const filteredContacts = contacts.filter(contact => {
+        return contact.nama.toLowerCase().includes(filter.toLowerCase());
+    })
+
+
     return (
         <Dialog
             fullScreen
@@ -84,6 +92,9 @@ export default function AddChatDialog({ open, handleClose }) {
                         </div>
                         <InputBase
                             placeholder="Search…"
+                            onChange={(e) => {
+                                setFilter(e.target.value)
+                            }}
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
@@ -96,8 +107,9 @@ export default function AddChatDialog({ open, handleClose }) {
             </Button> */}
                 </Toolbar>
             </AppBar>
+
             <List>
-                {contacts.map((contact) => {
+                {filteredContacts.map((contact) => {
                     if (contact.id === user.uid)
                         return null
 
