@@ -99,7 +99,8 @@ const useStyles = makeStyles(theme => ({
     },
     yourTimeStamp: {
         alignSelf: 'flex-end',
-        color: '#fff',
+        // color: '#fff',
+        color: '#0A0A0A',
         fontSize: 9,
     },
     myChatBubble: {
