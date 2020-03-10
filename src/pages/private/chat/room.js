@@ -89,6 +89,7 @@ export default function ChatRoom() {
                 activeContact = findContactId && findChat.user_profiles[findContactId];
                 setActiveContact(activeContact);
             }
+            console.log(activeContact)
         }
     }, [chats, setActiveChat, setActiveContact, params.chatId, user.uid])
 

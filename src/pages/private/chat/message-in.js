@@ -15,14 +15,14 @@ export default function MessageIn({ message }) {
         if (!message.is_read) {
             const readChat = async () => {
                 try {
-                    await firestore.doc(`chat/${params.chatId}/messages/${message.id}`).set({ is_read: true }, { merge: true });
-                    await firestore.doc(`chat/${params.chatId}`).set({
+                    await firestore.doc(`chats/${params.chatId}/messages/${message.id}`).set({ is_read: true }, { merge: true });
+                    await firestore.doc(`chats/${params.chatId}`).set({
                         unread_count: {
                             [user.uid]: 0
                         }
                     }, { merge: true })
                 } catch (e) {
-
+                    console.log(e.message)
                 }
             }
             readChat()
