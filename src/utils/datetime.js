@@ -7,12 +7,23 @@ import isToday from 'date-fns/isToday';
 import isYesterday from 'date-fns/isYesterday';
 
 export const unixToIsoDate = (unix) => {
-
-    return formatISO(parse(unix, 'T', new Date()), { representation: 'date' })
+    if (!unix)
+        return '';
+    try {
+        return formatISO(parse(unix, 'T', new Date()), { representation: 'date' })
+    } catch (e) {
+        return '';
+    }
 }
 
 export const unixToTime = (unix) => {
-    return format(parse(unix, 'T', new Date()), 'HH:mm')
+    if (!unix)
+        return ''
+    try {
+        return format(parse(unix, 'T', new Date()), 'HH:mm')
+    } catch (e) {
+        return '';
+    }
 }
 
 
@@ -28,16 +39,23 @@ export const unixToNow = (unix) => {
 }
 
 export const isoToRelative = (iso) => {
-    const date = parseISO(iso);
+    if (!iso)
+        return '';
 
-    if (isToday(date)) {
-        return 'Today'
-    } else if (isYesterday(date)) {
-        return 'Yesterday'
-    } else {
+    try {
+        const date = parseISO(iso);
 
-        return format(date, 'MMMM dd, yyyy')
+        if (isToday(date)) {
+            return 'Today'
+        } else if (isYesterday(date)) {
+            return 'Yesterday'
+        } else {
 
+            return format(date, 'MMMM dd, yyyy')
+
+        }
+    } catch (e) {
+        return '';
     }
 
 }

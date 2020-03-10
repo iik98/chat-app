@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import SendIcon from '@material-ui/icons/Send';
-import CancelScheduleSendIcon from '@material-ui/icons/CancelScheduleSend';
 import CheckIcon from '@material-ui/icons/Check';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import TextField from '@material-ui/core/TextField';
@@ -22,6 +21,7 @@ import useStyles from './styles/room';
 import groupBy from 'lodash/groupBy';
 import { animateScroll as scroll } from 'react-scroll';
 import { unixToIsoDate, unixToTime, isoToRelative } from '../../../utils/datetime';
+import MessageIn from './message-in';
 export default function ChatRoom() {
     const params = useParams();
     const history = useHistory();
@@ -39,13 +39,14 @@ export default function ChatRoom() {
 
     const [isSending, setSending] = useState(false);
 
-    // useEffect(() => {
-    //     scroll.scrollToBottom({
-    //         offset: 0,
-    //         isDynamic: true,
-    //         duration: 10
-    //     });
-    // })
+    useEffect(() => {
+        scroll.scrollToBottom({
+            containerId: "chatWindow",
+            offset: 0,
+            isDynamic: true,
+            duration: 10
+        });
+    })
     useEffect(() => {
 
 
@@ -133,59 +134,60 @@ export default function ChatRoom() {
         }
     }
 
-    console.log(messages, loading, error)
+
+
+    const messagesGroupByDate = useMemo(() => {
+        if (messages) {
+            return groupBy(messages, (message) => {
+
+                return unixToIsoDate(message.created_at && message.created_at.toMillis());
+            })
+        }
+        return {}
+    }, [messages])
+
+    console.log(messagesGroupByDate);
     return <>
         {/* <div className={classes.messagesBox}>
             {messages ? <ul>
                 {messages.map(message => <li key={message.id}>{JSON.stringify(message)}</li>)}
             </ul> : <p>belum ada pesan</p>}
         </div> */}
-        <div className={classes.chatWindow}>
-            <div className={classes.chatDayWrap}>
-                <Typography className={classes.chatDay} variant="caption">Today</Typography>
-            </div>
-            <div className={classes.yourChatBubble}>
-                <div className={classes.yourTextBody}>
-                    <Typography className={classes.yourText} variant="body1" >bob</Typography>
-                    <Typography className={classes.yourTimeStamp} variant="caption">11:12</Typography>
-                </div>
-            </div>
-            <div className={classes.myChatBubble}>
-                <div className={classes.myTextBody}>
-                    <Typography className={classes.myText} variant="body1">Heyy</Typography>
-                    <div className={classes.deliveryDetail}>
-                        <CheckIcon className={classes.sentIcon} />
-                        <DoneAllIcon className={classes.readIcon} />
-                        <Typography className={classes.myTimeStamp} variant="caption">
-                            12:00
-                        </Typography>
+        <div id="chatWindow" className={classes.chatWindow}>
+
+            {Object.keys(messagesGroupByDate).map(dateStr => {
+
+                return <React.Fragment key={dateStr}>
+                    <div className={classes.chatDayWrap}>
+                        <Typography className={classes.chatDay} variant="caption">{isoToRelative(dateStr)}</Typography>
                     </div>
-                </div>
-            </div>
-            <div className={classes.yourChatBubble}>
-                <div className={classes.yourTextBody}>
-                    <Typography className={classes.yourText} variant="body1" >makan gak?</Typography>
-                    <Typography className={classes.yourTimeStamp} variant="caption">12:01</Typography>
-                </div>
-            </div>
-            <div className={classes.myChatBubble}>
-                <div className={classes.myTextBody}>
-                    <Typography className={classes.myText} variant="body1">entar</Typography>
-                    <div className={classes.deliveryDetail}>
-                        <CheckIcon className={classes.sentIcon} />
-                        <DoneAllIcon className={classes.readIcon} />
-                        <Typography className={classes.myTimeStamp} variant="caption">
-                            12:02
-                        </Typography>
-                    </div>
-                </div>
-            </div>
-            <div className={classes.yourChatBubble}>
-                <div className={classes.yourTextBody}>
-                    <Typography className={classes.yourText} variant="body1" >jam?</Typography>
-                    <Typography className={classes.yourTimeStamp} variant="caption">12:04</Typography>
-                </div>
-            </div>
+                    {
+                        messagesGroupByDate[dateStr].map(message => {
+                            if (message.from_user_id !== user.uid) {
+                                return <MessageIn key={message.id} message={message} />
+                            }
+
+                            return <div key={message.id} className={classes.myChatBubble}>
+                                <div className={classes.myTextBody}>
+
+                                    {message.text.split('\n').map((text, i) => {
+                                        return <Typography key={i} className={classes.myText} variant="body1">{text}</Typography>
+
+                                    })}
+                                    <div className={classes.deliveryDetail}>
+                                        {!message.is_read && <CheckIcon className={classes.sentIcon} />}
+                                        {message.is_read && <DoneAllIcon className={classes.readIcon} />}
+                                        <Typography className={classes.myTimeStamp} variant="caption">
+                                            {unixToTime(message.created_at && message.created_at.toMillis())}
+                                        </Typography>
+                                    </div>
+                                </div>
+                            </div>
+                        })
+                    }
+                </React.Fragment>
+            })
+            }
         </div>
         <div className={classes.floatingBottom}>
             <form onSubmit={sendChat}>
