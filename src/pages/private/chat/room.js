@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo, useLayoutEffect } from 'react';
 
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -33,20 +33,22 @@ export default function ChatRoom() {
     const chatMessagesRef = activeChatRef.collection('messages');
     const [activeChat, setActiveChat] = useState({});
     const [activeContact, setActiveContact] = useState({})
-    const [messages, loading, error] = useCollectionData(chatMessagesRef.orderBy("created_at", "asc"), { idField: 'id' });
+    const [messages] = useCollectionData(chatMessagesRef.orderBy("created_at", "asc"), { idField: 'id' });
     // create new ref
     const textRef = useRef(null);
 
     const [isSending, setSending] = useState(false);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
+
         scroll.scrollToBottom({
             containerId: "chatWindow",
             offset: 0,
             isDynamic: true,
             duration: 10
         });
-    })
+    }, [messages]);
+
     useEffect(() => {
 
 
@@ -63,6 +65,7 @@ export default function ChatRoom() {
                 <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                     {activeContact.nama}
                 </Typography>
+                {activeChat.is_typing && activeChat.is_typing[activeContact.id] ? <Typography variant="caption">Sedang mengetik...</Typography> : ''}
             </>
         });
 
@@ -93,7 +96,14 @@ export default function ChatRoom() {
         }
     }, [chats, setActiveChat, setActiveContact, params.chatId, user.uid])
 
+    const setTyping = is_typing => async (e) => {
 
+        await activeChatRef.set({
+            is_typing: {
+                [user.uid]: is_typing
+            }
+        }, { merge: true })
+    }
     const sendChat = async (e) => {
 
         e.preventDefault();
@@ -147,7 +157,7 @@ export default function ChatRoom() {
         return {}
     }, [messages])
 
-    console.log(messagesGroupByDate);
+
     return <>
         {/* <div className={classes.messagesBox}>
             {messages ? <ul>
@@ -186,6 +196,7 @@ export default function ChatRoom() {
                             </div>
                         })
                     }
+
                 </React.Fragment>
             })
             }
@@ -213,7 +224,11 @@ export default function ChatRoom() {
                             inputProps={{
                                 ref: textRef
                             }}
+                            multiline
+                            rowsMax={2}
                             placeholder="Ketik pesan"
+                            onFocus={setTyping(true)}
+                            onBlur={setTyping(false)}
                         />
                     </Grid>
                 </Grid>

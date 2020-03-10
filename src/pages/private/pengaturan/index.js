@@ -43,7 +43,7 @@ function Pengaturan(props) {
                 toolbar: null
             })
         }
-    })
+    }, [classes, dispatch, history])
 
     return (
         <Grid container spacing={3}>
