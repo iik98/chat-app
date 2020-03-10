@@ -62,10 +62,12 @@ export default function ChatRoom() {
                     <BackIcon />
                 </IconButton>
                 <Avatar alt={activeContact.nama} src={activeContact.foto} className={classes.foto} />
-                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                    {activeContact.nama}
-                </Typography>
-                {activeChat.is_typing && activeChat.is_typing[activeContact.id] ? <Typography variant="caption">Sedang mengetik...</Typography> : ''}
+                <div className={classes.contactName}>
+                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                        {activeContact.nama}
+                    </Typography>
+                    {activeChat.is_typing && activeChat.is_typing[activeContact.id] ? <Typography variant="caption">Sedang mengetik...</Typography> : ''}
+                </div>
             </>
         });
 

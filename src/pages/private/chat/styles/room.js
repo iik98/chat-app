@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
 
     title: {
-        flexGrow: 1,
+        marginBottom: -5,
     },
     foto: {
         marginRight: theme.spacing(2)
@@ -169,6 +169,11 @@ const useStyles = makeStyles(theme => ({
     },
     messagesBox: {
         paddingBottom: theme.spacing(4)
+    },
+    contactName:{
+        display: 'flex',
+        flexFlow: 'column nowrap',
+        flexGrow: 1,
     }
 }))
 
