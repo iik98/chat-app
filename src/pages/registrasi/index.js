@@ -146,101 +146,105 @@ function Registrasi() {
 
 
     return <div className={classes.daftarBlock}>
-            <div className={classes.daftarBox}>
-                <div className={classes.logoBox}>
-                    <img src={logo} alt="logo" />
-                </div>
-                <Container maxWidth="xs">
-                    <Paper className={classes.paper}>
-                        <Typography
-                            variant="h5"
-                            component="h1"
-                            className={classes.title}>Buat Akun Baru</Typography>
-
-                        <form onSubmit={handleSubmit} noValidate>
-                            <TextField
-                                id="nama"
-                                name="nama"
-                                margin="normal"
-                                label="Nama"
-                                fullWidth
-                                required
-                                value={form.nama}
-                                onChange={handleChange}
-                                helperText={error.nama}
-                                error={error.nama ? true : false}
-                                disabled={isSubmitting}
-                            />
-                            <TextField
-                                id="email"
-                                type="email"
-                                name="email"
-                                margin="normal"
-                                label="Alamat Email"
-                                fullWidth
-                                required
-                                value={form.email}
-                                onChange={handleChange}
-                                helperText={error.email}
-                                error={error.email ? true : false}
-                                disabled={isSubmitting}
-                            />
-                            <TextField
-                                id="password"
-                                type="password"
-                                name="password"
-                                margin="normal"
-                                label="Password"
-                                autoComplete="new-password"
-                                fullWidth
-                                required
-                                value={form.password}
-                                onChange={handleChange}
-                                helperText={error.password}
-                                error={error.password ? true : false}
-                                disabled={isSubmitting}
-                            />
-                            <TextField
-                                id="ulangi_password"
-                                type="password"
-                                name="ulangi_password"
-                                margin="normal"
-                                label="Ulangi Password"
-                                fullWidth
-                                required
-                                value={form.ulangi_password}
-                                onChange={handleChange}
-                                helperText={error.ulangi_password}
-                                error={error.ulangi_password ? true : false}
-                                disabled={isSubmitting}
-                            />
-
-                            <Grid container className={classes.buttons}>
-                                <Grid item xs>
-                                    <Button
-                                        disabled={isSubmitting}
-                                        type="submit" color="primary" variant="contained"
-                                        size="large"
-                                    >Daftar</Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button
-                                        disabled={isSubmitting}
-                                        component={Link}
-                                        variant="contained"
-                                        size="large"
-                                        to="/login"
-                                    >Login</Button>
-                                </Grid>
-                            </Grid>
-
-
-                        </form>
-
-                    </Paper>
-                </Container>
+        <div className={classes.daftarBox}>
+            <div className={classes.logoBox}>
+                <img src={logo} alt="logo" />
             </div>
+            <Container maxWidth="xs">
+                <Paper className={classes.paper}>
+                    <Typography
+                        variant="h5"
+                        component="h1"
+                        className={classes.title}>Buat Akun Baru</Typography>
+
+                    <form onSubmit={handleSubmit} noValidate>
+                        <TextField
+                            id="nama"
+                            name="nama"
+                            margin="normal"
+                            label="Nama"
+                            fullWidth
+                            required
+                            value={form.nama}
+                            onChange={handleChange}
+                            helperText={error.nama}
+                            error={error.nama ? true : false}
+                            disabled={isSubmitting}
+                            variant="outlined"
+                        />
+                        <TextField
+                            id="email"
+                            type="email"
+                            name="email"
+                            margin="normal"
+                            label="Alamat Email"
+                            fullWidth
+                            required
+                            value={form.email}
+                            onChange={handleChange}
+                            helperText={error.email}
+                            error={error.email ? true : false}
+                            disabled={isSubmitting}
+                            variant="outlined"
+                        />
+                        <TextField
+                            id="password"
+                            type="password"
+                            name="password"
+                            margin="normal"
+                            label="Password"
+                            autoComplete="new-password"
+                            fullWidth
+                            required
+                            value={form.password}
+                            onChange={handleChange}
+                            helperText={error.password}
+                            error={error.password ? true : false}
+                            disabled={isSubmitting}
+                            variant="outlined"
+                        />
+                        <TextField
+                            id="ulangi_password"
+                            type="password"
+                            name="ulangi_password"
+                            margin="normal"
+                            label="Ulangi Password"
+                            fullWidth
+                            required
+                            value={form.ulangi_password}
+                            onChange={handleChange}
+                            helperText={error.ulangi_password}
+                            error={error.ulangi_password ? true : false}
+                            disabled={isSubmitting}
+                            variant="outlined"
+                        />
+
+                        <Grid container className={classes.buttons}>
+                            <Grid item xs>
+                                <Button
+                                    disabled={isSubmitting}
+                                    type="submit" color="primary" variant="contained"
+                                    size="large"
+                                >Daftar</Button>
+                            </Grid>
+                            <Grid item>
+                                <Button
+                                    disabled={isSubmitting}
+                                    component={Link}
+                                    variant="contained"
+                                    size="large"
+                                    to="/login"
+                                >Login</Button>
+                            </Grid>
+                        </Grid>
+
+
+                    </form>
+
+                </Paper>
+            </Container>
         </div>
+    </div>
 }
 
 export default Registrasi;

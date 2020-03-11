@@ -126,11 +126,11 @@ function LupaPassword() {
 
     console.log(user)
     return <div className={classes.forpassBlock}>
-            <div className={classes.forpassBox}>
-                <div className={classes.logoBox}>
-                    <img src={logo} alt="logo" />
-                </div>
-                <Container maxWidth="xs">
+        <div className={classes.forpassBox}>
+            <div className={classes.logoBox}>
+                <img src={logo} alt="logo" />
+            </div>
+            <Container maxWidth="xs">
                 <Paper className={classes.paper}>
                     <Typography
                         variant="h5"
@@ -151,6 +151,7 @@ function LupaPassword() {
                             helperText={error.email}
                             error={error.email ? true : false}
                             disabled={isSubmitting}
+                            variant="outlined"
                         />
                         <Grid container className={classes.buttons}>
                             <Grid item xs>
