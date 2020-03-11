@@ -56,7 +56,7 @@ export default function ChatList() {
                         <ListItemAvatar>
                             <Avatar alt={profile.nama} src={profile.foto} className={classes.orange} />
                         </ListItemAvatar>
-                        <ListItemText primary={profile.nama} secondary={chat.is_typing && chat.is_typing[profile.id] ? 'mengetik...' : (chat.last_message.text || 'Belum ada pesan, kirim sekarang!')} />
+                        <ListItemText classes={{secondary:classes.contactMsg}} primary={profile.nama} secondary={chat.is_typing && chat.is_typing[profile.id] ? 'mengetik...' : (chat.last_message.text || 'Belum ada pesan, kirim sekarang!')} />
                         {chat.unread_count[user.uid] > 0 &&
                             <ListItemSecondaryAction>
                                 <Badge color="primary" badgeContent={chat.unread_count[user.uid]}>
