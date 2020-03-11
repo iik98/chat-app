@@ -16,7 +16,7 @@ function AppLoading() {
 
 
     return (
-        <Container maxWidth="xs">
+        <Container className={classes.loadingBlock} maxWidth="xs">
             <div className={classes.loadingBox}>
                 <Typography
                     variant="h6"
