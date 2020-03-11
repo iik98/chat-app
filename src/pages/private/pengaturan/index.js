@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //material-ui
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
@@ -22,16 +21,25 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 // page components
 import UploadAvatar from './avatar';
+import EditDialog from './edit';
 // styles
 import useStyles from './styles';
 
 import { useAppBar, types } from '../index';
 import { useHistory } from 'react-router-dom';
+import { useData } from '../../../components/DataProvider';
+import { useFirebase } from '../../../components/FirebaseProvider';
 
 function Pengaturan(props) {
     const history = useHistory();
     const { dispatch } = useAppBar();
     const classes = useStyles();
+    const { profile } = useData();
+    const { user } = useFirebase();
+    const [editDialog, setEditDialog] = useState({
+        open: false,
+        fieldMode: "Nama"
+    })
 
     useEffect(() => {
 
@@ -58,35 +66,77 @@ function Pengaturan(props) {
         }
     }, [classes, dispatch, history])
 
-    return (
+    return (<>
         <Grid container spacing={3}>
-            <Grid item xs={12} className={classes.avatar} justify="center">
+            <Grid item xs={12} className={classes.avatar} >
                 <UploadAvatar />
             </Grid>
-            <Grid item xs={12} justify="center">
+            <Grid item xs={12} >
                 <List className={classes.root}>
                     <ListItem alignItems="flex-start">
                         <ListItemAvatar>
                             <PersonIcon className={classes.iconList} />
                         </ListItemAvatar>
                         <ListItemText
-                        primary="Nama"
-                        secondary={
-                            <React.Fragment>
-                            <Typography
-                                component="p"
-                                variant="body2"
-                                className={classes.inline}
-                                color="textPrimary"
-                            >
-                                Muhammad Al Fatih
-                            </Typography>
-                            {" Nama ini akan muncul di kontak teman anda"}
-                            </React.Fragment>
-                        }
+                            primary="Nama"
+                            secondary={
+                                <React.Fragment>
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        className={classes.block}
+                                        color="textPrimary"
+                                    >
+                                        {profile.nama}
+                                    </Typography>
+                                    {" Nama ini akan muncul di kontak pengguna lain"}
+                                </React.Fragment>
+                            }
                         />
                         <ListItemSecondaryAction>
-                            <IconButton className={classes.editBtn} edge="end" aria-label="edit">
+                            <IconButton
+                                onClick={() => {
+                                    setEditDialog({
+                                        open: true,
+                                        fieldMode: "Nama"
+                                    })
+                                }}
+                                className={classes.editBtn} edge="end" aria-label="edit">
+                                <EditIcon />
+                            </IconButton>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+
+                    <Divider variant="inset" component="li" />
+                    <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                            <InfoIcon className={classes.iconList} />
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary="Deskripsi"
+                            secondary={
+                                <React.Fragment>
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        className={classes.block}
+                                        color="textPrimary"
+                                    >
+                                        {profile.deskripsi || 'Belum ada deskripsi'}
+                                    </Typography>
+                                    {" Deskripsi ini akan muncul di kontak pengguna lain"}
+                                </React.Fragment>
+                            }
+                        />
+                        <ListItemSecondaryAction>
+                            <IconButton
+                                onClick={() => {
+                                    setEditDialog({
+                                        open: true,
+                                        fieldMode: "Deskripsi"
+                                    })
+                                }}
+                                className={classes.editBtn} edge="end" aria-label="edit">
                                 <EditIcon />
                             </IconButton>
                         </ListItemSecondaryAction>
@@ -97,74 +147,63 @@ function Pengaturan(props) {
                             <EmailIcon className={classes.iconList} />
                         </ListItemAvatar>
                         <ListItemText
-                        primary="Email"
-                        secondary={
-                            <React.Fragment>
-                            <Typography
-                                component="p"
-                                variant="body2"
-                                className={classes.inline}
-                                color="textPrimary"
-                            >
-                                muhammadalfatih@mail.com
-                            </Typography>
-                            </React.Fragment>
-                        }
+                            primary="Email"
+                            secondary={
+                                <React.Fragment>
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        className={classes.block}
+                                        color="textPrimary"
+                                    >
+                                        {user.email}
+                                    </Typography>
+                                </React.Fragment>
+                            }
                         />
                         <ListItemSecondaryAction>
-                            <IconButton className={classes.editBtn} edge="end" aria-label="edit">
+                            <IconButton
+                                onClick={() => {
+                                    setEditDialog({
+                                        open: true,
+                                        fieldMode: "Email"
+                                    })
+                                }}
+                                className={classes.editBtn} edge="end" aria-label="edit">
                                 <EditIcon />
                             </IconButton>
                         </ListItemSecondaryAction>
                     </ListItem>
                     <Divider variant="inset" component="li" />
-                    <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                            <InfoIcon className={classes.iconList} />
-                        </ListItemAvatar>
-                        <ListItemText
-                        primary="Deskripsi"
-                        secondary={
-                            <React.Fragment>
-                            <Typography
-                                component="p"
-                                variant="body2"
-                                className={classes.inline}
-                                color="textPrimary"
-                            >
-                                Available
-                            </Typography>
-                            </React.Fragment>
-                        }
-                        />
-                        <ListItemSecondaryAction>
-                            <IconButton className={classes.editBtn} edge="end" aria-label="edit">
-                                <EditIcon />
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
+
                     <ListItem alignItems="flex-start">
                         <ListItemAvatar>
                             <VpnKeyIcon className={classes.iconList} />
                         </ListItemAvatar>
                         <ListItemText
-                        primary="Password"
-                        secondary={
-                            <React.Fragment>
-                            <Typography
-                                component="p"
-                                variant="body2"
-                                className={classes.inline}
-                                color="textPrimary"
-                            >
-                                ********
+                            primary="Password"
+                            secondary={
+                                <React.Fragment>
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        className={classes.block}
+                                        color="textPrimary"
+                                    >
+                                        ********
                             </Typography>
-                            </React.Fragment>
-                        }
+                                </React.Fragment>
+                            }
                         />
                         <ListItemSecondaryAction>
-                            <IconButton className={classes.editBtn} edge="end" aria-label="edit">
+                            <IconButton
+                                onClick={() => {
+                                    setEditDialog({
+                                        open: true,
+                                        fieldMode: "Password"
+                                    })
+                                }}
+                                className={classes.editBtn} edge="end" aria-label="edit">
                                 <EditIcon />
                             </IconButton>
                         </ListItemSecondaryAction>
@@ -172,6 +211,14 @@ function Pengaturan(props) {
                 </List>
             </Grid>
         </Grid>
+
+        <EditDialog
+            {...editDialog}
+            handleClose={() => {
+                setEditDialog(editDialog => ({ ...editDialog, open: false }))
+            }}
+        />
+    </>
     )
 }
 

@@ -5,17 +5,20 @@ const useStyles = makeStyles(theme => ({
     title: {
         flexGrow: 1,
     },
-    iconList:{
+    iconList: {
         color: theme.palette.textColor.gray8,
     },
-    editBtn:{
+    editBtn: {
         color: theme.palette.primary.main,
-        '&:hover':{
+        '&:hover': {
             color: theme.palette.primary.main,
         },
-        '&:active':{
+        '&:active': {
             color: theme.palette.primary.dark,
         }
+    },
+    block: {
+        display: "block"
     }
 
 }))
