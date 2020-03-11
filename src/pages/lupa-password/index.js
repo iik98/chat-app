@@ -126,8 +126,6 @@ function LupaPassword() {
 
     console.log(user)
     return <div className={classes.forpassBlock}>
-            <div className={classes.forpassOverlay}>
-            </div>
             <div className={classes.forpassBox}>
                 <div className={classes.logoBox}>
                     <img src={logo} alt="logo" />

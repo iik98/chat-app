@@ -124,8 +124,7 @@ function Login(props) {
     }
 
 
-    return <div className={classes.loginBlock}> 
-                <div className={classes.loginOverlay}></div>
+    return <div className={classes.loginBlock}>
                 <div className={classes.loginBox}>
                     <div className={classes.logoBox}>
                         <img src={logo} alt="logo" />

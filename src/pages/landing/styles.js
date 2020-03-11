@@ -9,14 +9,18 @@ const useStyles = makeStyles(theme => ({
         backgroundPosition: 'center center',
         width: '100%',
         height: '100vh',
-    },
-    landingOverlay:{
-        backgroundImage: 'radial-gradient(50% 42%, '+ theme.palette.primary.light +' 50%, ' + theme.palette.primary.main + ' 99%)',
-        opacity: '.9',
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        zIndex: 1,
+        position: 'relative',
+        '&:before':{
+            content: '""',
+            backgroundImage: 'radial-gradient(50% 42%, '+ theme.palette.primary.light +' 50%, ' + theme.palette.primary.main + ' 99%)',
+            opacity: '.9',
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+        }
     },
     landingBox:{
         position: 'relative',

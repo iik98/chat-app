@@ -146,8 +146,6 @@ function Registrasi() {
 
 
     return <div className={classes.daftarBlock}>
-            <div className={classes.daftarOverlay}>
-            </div>
             <div className={classes.daftarBox}>
                 <div className={classes.logoBox}>
                     <img src={logo} alt="logo" />
