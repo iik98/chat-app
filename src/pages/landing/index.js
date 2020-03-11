@@ -23,8 +23,6 @@ export default function Landing() {
     }
 
     return <div className={classes.landingBlock}>
-                <div className={classes.landingOverlay}>
-                </div>
                 <div className={classes.landingBox}>
                     <div className={classes.logoBox}>
                         <img src={logo} alt="logo" />
